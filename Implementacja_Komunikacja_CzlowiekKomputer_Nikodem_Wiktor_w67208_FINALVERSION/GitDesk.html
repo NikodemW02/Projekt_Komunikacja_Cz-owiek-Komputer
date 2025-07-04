@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitDesk - Aplikacja HelpDesk</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>GitDesk</h1>
+                <div class="logo-container">
+                    <svg class="company-logo" width="80" height="80" viewBox="0 0 80 80">
+
+                        <circle cx="40" cy="40" r="38" fill="url(#logoGradient)" stroke="#4a5568" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h3 class="login-subtitle">Zaloguj się do swojej organizacji</h3>
+                <p style="color: #999; margin-bottom: 30px;">Wpisz swoje poświadczenia otrzymane podczas onboardingu</p>
+                
+                <div id="loginMessage" class="flash-message hidden">Nieprawidłowe dane logowania</div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <input type="email" id="loginEmail" placeholder="podaj adres e-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="podaj hasło" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Zaloguj</button>
+                </form>
+                
+                <div style="margin-top: 20px; color: #999; font-size: 0.9em;">
+                    <p><strong>Przykładowe konto:</strong></p>
+                    <p>admin@firma.com / admin123</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- strona glowna -->
+    <div id="dashboardPage" class="page">
+        <div class="dashboard">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Nazwa_Firmy</h3>
+                    <small>Menu</small>
+                </div>
+                
+                <div class="menu-item active" onclick="showPage('dashboardPage')">
+                    <span>🏠</span> Home
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" placeholder="🔍 Wyszukaj" id="globalSearch">
+                </div>
+                
+                <div class="menu-item" onclick="showPage('ticketsPage')">
+                    <span>📋</span> Twoje Zgłoszenia
+                </div>
+                
+                <div class="sidebar-section">
+                    <h4>Narzędzia</h4>
+                    <div class="menu-item" onclick="showPage('analyticsPage')">
+                        <span>📊</span> Analiza
+                    </div>
+                    <div class="menu-item" onclick="showPage('heatmapPage')">
+                        <span>🗺️</span> HeatMapa
+                    </div>
+                </div>
+                
+                <a href="#" class="logout-btn" onclick="logout()">Wyloguj</a>
+            </div>
+            
+            <div class="main-content">
+                <div class="main-header">
+                    <h1>GitDesk</h1>
+                    <p>Witany na stronie startowej GitDesk, nasza aplikacja pomoże Ci utrzymać stabilną pracę Twojego urządzenia, oraz urządzeń produkcyjnych. Jeśli masz z czymś problem, stwórz formularz zgłoszeniowy i wyślij go przyciskiem "Submit".</p>
+                </div>
+                
+                <div id="successMessage" class="flash-message hidden">Zgłoszenie zostało utworzone pomyślnie!</div>
+                
+                <div class="ticket-form">
+                    <h3>Formularz Zgłoszeniowy</h3>
+                    <form id="ticketForm">
+                        <div class="form-group">
+                            <label>Tytuł</label>
+                            <input type="text" id="ticketTitle" placeholder="Podaj zwięzły tytuł" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Miejsce</label>
+                                <select id="ticketLocation" required>
+                                    <option value="">Lista wyboru</option>
+                                    <optgroup label="🏭 HALA 1 - Biura + Stage 1">
+                                        <option value="HD PR1">HD PR1 - Produkcja Stage 1</option>
+                                        <option value="Biuro - R&D">Biuro - R&D</option>
+                                        <option value="Biuro - Księgowość">Biuro - Księgowość</option>
+                                        <option value="Jadalnia">Jadalnia</option>
+                                        <option value="Sala konferencyjna">Sala konferencyjna</option>
+                                        <option value="Brama wejściowa">Brama wejściowa</option>
+                                    </optgroup>
+                                    <optgroup label="🏭 HALA 2 - Stage 2 + Stage 3">
+                                        <option value="HD PR2">HD PR2 - Produkcja Stage 2</option>
+                                        <option value="HD PR3">HD PR3 - Produkcja Stage 3</option>
+                                        <option value="Kontrola jakości">Kontrola jakości</option>
+                                        <option value="Warsztat">Warsztat</option>
+                                        <option value="Szatnia">Szatnia</option>
+                                        <option value="Brama towarowa">Brama towarowa</option>
+                                    </optgroup>
+                                    <optgroup label="🏪 HALA 3 - Magazyn + Logistyka">
+                                        <option value="Magazyn">Magazyn główny</option>
+                                        <option value="Magazyn surowców">Magazyn surowców</option>
+                                        <option value="Magazyn produktów">Magazyn produktów</option>
+                                        <option value="Biuro logistyki">Biuro logistyki</option>
+                                        <option value="Strefa kompletacji">Strefa kompletacji</option>
+                                        <option value="Parking wózków">Parking wózków</option>
+                                        <option value="Rampa załadunkowa">Rampa załadunkowa</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Priorytet</label>
+                                <select id="ticketPriority" required>
+                                    <option value="">Lista Wyboru</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Opis Problemu</label>
+                            <textarea id="ticketDescription" placeholder="Opisz swój problem" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- tickety -->
+    <div id="ticketsPage" class="page">
+        <a href="#" class="home-btn" onclick="showPage('dashboardPage')">Home</a>
+        
+        <div class="dashboard">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Lista</h3>
+                </div>
+                
+                <div class="sidebar-list">
+                    <div class="list-item" onclick="filterTickets('active')">Zgłoszenia aktywne</div>
+                    <div class="list-item" onclick="filterTickets('closed')">Zgłoszenia zakończone</div>
+                    <div class="list-item" onclick="filterTickets('in_progress')">Zgłoszenia w trakcie</div>
+                    <div class="list-item" onclick="filterTickets('my')">Twoje zgłoszenia</div>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <h2>Twoje zgłoszenia</h2>
+                
+                <div class="filter-controls">
+                    <input type="text" placeholder="🔍 Wyszukaj" id="ticketSearch">
+                    <button onclick="toggleFilter()">🗂️ Filtruj</button>
+                    <div style="margin-left: auto;">
+                        <button onclick="toggleView('list')">📋</button>
+                        <button onclick="toggleView('grid')">⚏</button>
+                        <button onclick="toggleView('calendar')">📅</button>
+                    </div>
+                </div>
+                
+                <table class="tickets-table" id="ticketsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tytuł</th>
+                            <th>Miejsce</th>
+                            <th>Priorytet</th>
+                            <th>Data</th>
+                            <th>Zgłaszający</th>
+                            <th>Status & Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ticketsTableBody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- analiza -->
+    <div id="analyticsPage" class="page">
+        <a href="#" class="home-btn" onclick="showPage('dashboardPage')">Home</a>
+        
+        <div class="main-content" style="padding: 30px;">
+            <h2>Analiza</h2>
+            
+            <div class="hall-tabs">
+                <button class="hall-tab active" onclick="switchAnalyticsHall('Hala1')">Hala1</button>
+                <button class="hall-tab" onclick="switchAnalyticsHall('Hala2')">Hala2</button>
+                <button class="hall-tab" onclick="switchAnalyticsHall('Hala3')">Hala3</button>
+                <button class="hall-tab" onclick="switchAnalyticsHall('ALL')">ALL</button>
+                <div class="report-selector">
+                    <select>
+                        <option>Wybierz raport ▼</option>
+                        <option>Miesięczny</option>
+                        <option>Kwartalny</option>
+                        <option>Roczny</option>
+                    </select>
+                </div>
+            </div>
+            
+
+            <div id="analyticsContent"></div>
+        </div>
+    </div>
+
+    <!-- heatmapa -->
+    <div id="heatmapPage" class="page">
+        <a href="#" class="home-btn" onclick="showPage('dashboardPage')">Home</a>
+        
+        <div class="dashboard">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Nazwa_Firmy</h3>
+                    <small>Menu</small>
+                </div>
+                
+                <div class="menu-item" onclick="showPage('dashboardPage')">
+                    <span>🏠</span> Home
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" placeholder="🔍 Wyszukaj">
+                </div>
+                
+                <div class="menu-item" onclick="showPage('ticketsPage')">
+                    <span>📋</span> Twoje Zgłoszenia
+                </div>
+                
+                <div class="sidebar-section">
+                    <h4>Narzędzia</h4>
+                    <div class="menu-item" onclick="showPage('analyticsPage')">
+                        <span>📊</span> Analiza
+                    </div>
+                    <div class="menu-item active">
+                        <span>🗺️</span> HeatMapa
+                    </div>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="hall-tabs">
+                    <button class="hall-tab active" onclick="switchHeatmapHall('Hala1')">Hala1</button>
+                    <button class="hall-tab" onclick="switchHeatmapHall('Hala2')">Hala2</button>
+                    <button class="hall-tab" onclick="switchHeatmapHall('Hala3')">Hala3</button>
+                </div>
+                
+                <div class="heatmap-container">
+                    <h3>HeatMapa</h3>
+                    <p id="currentHall">Hala1</p>
+                    
+                    <!-- HALA 1 - Biura + Stage 1 -->
+                    <div class="heatmap-canvas" id="heatmapCanvas1" style="display: block;">
+                        <div class="production-area" style="left: 280px; top: 20px; width: 140px; height: 50px; background: rgba(200, 220, 255, 0.9);">
+                            Brama wejściowa
+                        </div>
+                        <div class="production-area" style="left: 30px; top: 120px; width: 300px; height: 150px; background: rgba(255, 240, 200, 0.9);">
+                            Produkcja - Stage 1<br><small>Linia montażowa główna</small>
+                        </div>
+                        <div class="production-area" style="right: 30px; top: 120px; width: 200px; height: 100px; background: rgba(200, 255, 200, 0.9);">
+                            Biuro R&D<br><small>Dział innowacji</small>
+                        </div>
+                        <div class="production-area" style="right: 30px; top: 250px; width: 200px; height: 100px; background: rgba(200, 255, 200, 0.9);">
+                            Biuro Księgowość<br><small>Finanse</small>
+                        </div>
+                        <div class="production-area" style="left: 200px; top: 320px; width: 200px; height: 120px; background: rgba(255, 200, 200, 0.9);">
+                            Jadalnia<br><small>Strefa relaksu</small>
+                        </div>
+                        <div class="production-area" style="left: 30px; top: 320px; width: 150px; height: 80px; background: rgba(220, 200, 255, 0.9);">
+                            Sala konferencyjna<br><small>Spotkania</small>
+                        </div>
+                    </div>
+                    
+                    <!-- HALA 2 - Stage 2 + Stage 3 -->
+                    <div class="heatmap-canvas" id="heatmapCanvas2" style="display: none;">
+                        <div class="production-area" style="left: 280px; top: 20px; width: 140px; height: 50px; background: rgba(200, 220, 255, 0.9);">
+                            Brama towarowa
+                        </div>
+                        <div class="production-area" style="left: 30px; top: 100px; width: 280px; height: 180px; background: rgba(255, 240, 200, 0.9);">
+                            Produkcja - Stage 2<br><small>Linia obróbki CNC</small>
+                        </div>
+                        <div class="production-area" style="right: 30px; top: 100px; width: 280px; height: 180px; background: rgba(255, 220, 150, 0.9);">
+                            Produkcja - Stage 3<br><small>Linia pakowania</small>
+                        </div>
+                        <div class="production-area" style="left: 200px; top: 320px; width: 200px; height: 100px; background: rgba(255, 255, 200, 0.9);">
+                            Kontrola jakości<br><small>Testowanie</small>
+                        </div>
+                        <div class="production-area" style="left: 30px; top: 320px; width: 150px; height: 100px; background: rgba(200, 200, 255, 0.9);">
+                            Warsztat<br><small>Naprawa maszyn</small>
+                        </div>
+                        <div class="production-area" style="right: 30px; top: 320px; width: 150px; height: 100px; background: rgba(255, 200, 255, 0.9);">
+                            Szatnia<br><small>Zmiana robocza</small>
+                        </div>
+                    </div>
+                    
+                    <!-- HALA 3 - Magazyn + Logistyka -->
+                    <div class="heatmap-canvas" id="heatmapCanvas3" style="display: none;">
+                        <div class="production-area" style="left: 50px; top: 20px; width: 600px; height: 50px; background: rgba(180, 180, 180, 0.9);">
+                            Rampa załadunkowa - Dostawa / Wysyłka
+                        </div>
+                        <div class="production-area" style="left: 30px; top: 90px; width: 180px; height: 180px; background: rgba(180, 180, 180, 0.9);">
+                            Magazyn surowców<br><small>Materiały wejściowe</small>
+                        </div>
+                        <div class="production-area" style="left: 230px; top: 90px; width: 240px; height: 180px; background: rgba(160, 160, 160, 0.9);">
+                            Magazyn główny<br><small>Regały wysokie</small>
+                        </div>
+                        <div class="production-area" style="right: 30px; top: 90px; width: 180px; height: 180px; background: rgba(200, 200, 200, 0.9);">
+                            Magazyn produktów<br><small>Towar gotowy</small>
+                        </div>
+                        <div class="production-area" style="left: 30px; top: 290px; width: 140px; height: 80px; background: rgba(200, 255, 200, 0.9);">
+                            Biuro logistyki<br><small>Zarządzanie</small>
+                        </div>
+                        <div class="production-area" style="left: 190px; top: 290px; width: 180px; height: 80px; background: rgba(255, 255, 180, 0.9);">
+                            Strefa kompletacji<br><small>Przygotowanie zamówień</small>
+                        </div>
+                        <div class="production-area" style="right: 30px; top: 290px; width: 140px; height: 80px; background: rgba(255, 200, 150, 0.9);">
+                            Parking wózków<br><small>Sprzęt transportowy</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
